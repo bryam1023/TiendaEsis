@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TiendaEsis</string>
+
+    <string name="first_slide">Choose your Products</string>
+    <string name="second_slide">Choose your Products</string>
+    <string name="third_slide">Choose your Products</string>
+    <string name="description">Lorem ipsum is simply dummy text of the printing and typesetting </string>
 </resources>
