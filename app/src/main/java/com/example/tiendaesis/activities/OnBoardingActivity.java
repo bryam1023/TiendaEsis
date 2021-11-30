@@ -1,10 +1,9 @@
-package com.example.tiendaesis;
+package com.example.tiendaesis.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -14,6 +13,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.tiendaesis.R;
+import com.example.tiendaesis.adapters.SliderAdapter;
 
 public class OnBoardingActivity extends AppCompatActivity {
 

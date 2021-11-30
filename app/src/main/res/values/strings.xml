@@ -5,4 +5,6 @@
     <string name="second_slide">Choose your Products</string>
     <string name="third_slide">Choose your Products</string>
     <string name="description">Lorem ipsum is simply dummy text of the printing and typesetting </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
