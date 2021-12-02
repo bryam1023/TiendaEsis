@@ -28,9 +28,12 @@ import java.util.HashMap;
 public class DetailedActivity extends AppCompatActivity {
 
     ImageView detailedImg;
-    TextView rating,name,description,price;
+    TextView rating,name,description,price,quantity;
     Button addToCart,buyNow;
     ImageView addItems,removeItems;
+
+    int totalQuantity = 1;
+    int totalPrice = 0;
 
 //new products
 
@@ -64,6 +67,7 @@ public class DetailedActivity extends AppCompatActivity {
         }
 
         detailedImg = findViewById(R.id.detailed_img);
+        quantity = findViewById(R.id.quantity);
         name = findViewById(R.id.detailed_name);
         rating = findViewById(R.id.rating);
         description = findViewById(R.id.detailed_desc);
@@ -82,6 +86,9 @@ public class DetailedActivity extends AppCompatActivity {
                 description.setText(newProductsModel.getDescription());
                 price.setText(String.valueOf(newProductsModel.getPrice()));
                 name.setText(newProductsModel.getName());
+
+                totalPrice = newProductsModel.getPrice() * totalQuantity;
+
             }
 
         //Popular Products
@@ -92,6 +99,8 @@ public class DetailedActivity extends AppCompatActivity {
             description.setText(popularProductsModel.getDescription());
             price.setText(String.valueOf(popularProductsModel.getPrice()));
             name.setText(popularProductsModel.getName());
+
+            totalPrice = popularProductsModel.getPrice() * totalQuantity;
         }
         //Show All Products
         if (showAllModel != null){
@@ -101,14 +110,48 @@ public class DetailedActivity extends AppCompatActivity {
             description.setText(showAllModel.getDescription());
             price.setText(String.valueOf(showAllModel.getPrice()));
             name.setText(showAllModel.getName());
+
+            totalPrice = showAllModel.getPrice() * totalQuantity;
         }
 
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 addToCart();
-                
             }
+            });
+
+            addItems.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(totalQuantity < 10) {
+                        totalQuantity++;
+                        quantity.setText(String.valueOf(totalQuantity));
+
+                        if(newProductsModel != null){
+                            totalPrice = newProductsModel.getPrice() * totalQuantity;
+                        }
+                        if (popularProductsModel !=null ){
+                            totalPrice = popularProductsModel.getPrice() * totalQuantity;
+                        }  if(showAllModel != null){
+                            totalPrice = showAllModel.getPrice() * totalQuantity;
+                        }
+                    }
+                }
+            });
+        removeItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(totalQuantity > 1) {
+                    totalQuantity--;
+                    quantity.setText(String.valueOf(totalQuantity));
+                }
+
+            }
+        });
+
+        }
 
             private void addToCart() {
 
@@ -127,6 +170,8 @@ public class DetailedActivity extends AppCompatActivity {
                 cartMap.put("productPrice",price.getText().toString());
                 cartMap.put("currentTime",saveCurrentTime);
                 cartMap.put("currentDate",saveCurrentDate);
+                cartMap.put("totalQuantity",quantity.getText().toString());
+                cartMap.put("totalPrice",totalPrice);
 
                 firestore.collection("AddToCart").document(auth.getCurrentUser().getUid())
                         .collection("User").add(cartMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -137,7 +182,6 @@ public class DetailedActivity extends AppCompatActivity {
                     }
                 });
 
-            }
-        });
+
     }
 }
