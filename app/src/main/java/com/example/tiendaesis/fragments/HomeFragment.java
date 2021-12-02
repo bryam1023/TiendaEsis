@@ -1,5 +1,6 @@
 package com.example.tiendaesis.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
@@ -35,6 +37,8 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    LinearLayout linearLayout;
+    ProgressDialog progressDialog;
     RecyclerView catRecyclerview,newProductRecyclerview,popularRecyclerview;
 
     //category recyclerview
@@ -67,12 +71,15 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
+       progressDialog = new ProgressDialog(getActivity());
         catRecyclerview =root.findViewById(R.id.rec_category);
         newProductRecyclerview = root.findViewById(R.id.new_product_rec);
         popularRecyclerview = root.findViewById(R.id.popular_rec);
 
       db = FirebaseFirestore.getInstance();
 
+        linearLayout = root.findViewById(R.id.home_layout);
+        linearLayout.setVisibility(View.GONE);
         //image slider
         ImageSlider imageSlider = root.findViewById(R.id.image_slider);
         List<SlideModel> slideModels = new ArrayList<>();
@@ -82,6 +89,10 @@ public class HomeFragment extends Fragment {
         slideModels.add(new SlideModel(R.drawable.banner3,"70% OFF", ScaleTypes.CENTER_CROP));
 
         imageSlider.setImageList(slideModels);
+
+        progressDialog.setTitle("Bienvenido a TIENDA ESIS");
+        progressDialog.setMessage("Espere un momento....");
+        progressDialog.show();
 
         //category
         catRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
@@ -100,6 +111,8 @@ public class HomeFragment extends Fragment {
                             CategoryModel categoryModel =document.toObject(CategoryModel.class);
                             categoryModelList.add(categoryModel);
                            categoryAdapter.notifyDataSetChanged();
+                           linearLayout.setVisibility(View.VISIBLE);
+                           progressDialog.dismiss();
                             }
                         } else {
                             Toast.makeText(getActivity(), ""+task.getException(), Toast.LENGTH_SHORT).show();
