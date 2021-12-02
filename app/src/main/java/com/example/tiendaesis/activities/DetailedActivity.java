@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.tiendaesis.R;
 import com.example.tiendaesis.models.NewProductsModel;
+import com.example.tiendaesis.models.PopularProductsModel;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.os.Bundle;
@@ -22,6 +23,12 @@ public class DetailedActivity extends AppCompatActivity {
 //new products
 
     NewProductsModel newProductsModel = null;
+
+
+    //Popular products
+
+    PopularProductsModel popularProductsModel = null;
+
     private FirebaseFirestore firestore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,8 @@ public class DetailedActivity extends AppCompatActivity {
 
         if(obj instanceof NewProductsModel){
             newProductsModel = (NewProductsModel) obj;
+        } else if (obj instanceof PopularProductsModel){
+            popularProductsModel =(PopularProductsModel) obj;
         }
 
         detailedImg = findViewById(R.id.detailed_img);
@@ -56,5 +65,15 @@ public class DetailedActivity extends AppCompatActivity {
                 price.setText(String.valueOf(newProductsModel.getPrice()));
                 name.setText(newProductsModel.getName());
             }
+
+        //Popular Products
+        if (popularProductsModel != null){
+            Glide.with(getApplicationContext()).load(popularProductsModel.getImg_url()).into(detailedImg);
+            name.setText(popularProductsModel.getName());
+            rating.setText(popularProductsModel.getRating());
+            description.setText(popularProductsModel.getDescription());
+            price.setText(String.valueOf(popularProductsModel.getPrice()));
+            name.setText(popularProductsModel.getName());
+        }
     }
 }

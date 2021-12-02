@@ -1,5 +1,6 @@
 package com.example.tiendaesis.adapters;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import  android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tiendaesis.R;
+import com.example.tiendaesis.activities.DetailedActivity;
 import com.example.tiendaesis.models.PopularProductsModel;
 
 import java.util.List;
@@ -37,6 +39,16 @@ private List<PopularProductsModel> popularProductsModelList;
         Glide.with(context).load(popularProductsModelList.get(position).getImg_url()).into(holder.imageView);
         holder.name.setText(popularProductsModelList.get(position).getName());
         holder.price.setText(String.valueOf(popularProductsModelList.get(position).getPrice()));
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(context, DetailedActivity.class);
+                intent.putExtra("detailed",popularProductsModelList.get(position));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
