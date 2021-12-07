@@ -17,6 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
+
     EditText email,password;
     private FirebaseAuth auth;
     @Override
@@ -24,7 +25,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
+
         auth = FirebaseAuth.getInstance();
 
         email = findViewById(R.id.email);

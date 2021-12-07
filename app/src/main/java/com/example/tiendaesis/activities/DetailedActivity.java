@@ -2,6 +2,7 @@ package com.example.tiendaesis.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.tiendaesis.R;
@@ -32,6 +33,7 @@ public class DetailedActivity extends AppCompatActivity {
     Button addToCart,buyNow;
     ImageView addItems,removeItems;
 
+    Toolbar toolbar;
     int totalQuantity = 1;
     int totalPrice = 0;
 
@@ -53,6 +55,11 @@ public class DetailedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
+
+
+        toolbar = findViewById(R.id.detailed_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         firestore =FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
