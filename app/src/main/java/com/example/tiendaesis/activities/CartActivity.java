@@ -3,10 +3,16 @@ package com.example.tiendaesis.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.tiendaesis.R;
 import com.example.tiendaesis.adapters.MyCartAdapter;
@@ -23,6 +29,8 @@ import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
+    int overAllTotalAmount;
+    TextView overAllAmount;
     Toolbar toolbar;
     RecyclerView recyclerView;
     List<MyCartModel> cartModelList;
@@ -42,6 +50,12 @@ public class CartActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //get data from my cart adapter
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver( mMessageReceiver,new IntentFilter("MyTotalAmount"));
+
+
+        overAllAmount = findViewById(R.id.textView3);
         recyclerView = findViewById(R.id.cart_rec);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartModelList= new ArrayList<>();
@@ -54,7 +68,8 @@ public class CartActivity extends AppCompatActivity {
             public void onComplete(@NonNull  Task<QuerySnapshot> task) {
 
                 if (task.isSuccessful()){
-                    for (DocumentSnapshot doc :task.getResult().getDocuments()){
+                    for (DocumentSnapshot doc : task.getResult().getDocuments()){
+
                         MyCartModel myCartModel = doc.toObject(MyCartModel.class);
                         cartModelList.add(myCartModel);
                         cartAdapter.notifyDataSetChanged();
@@ -63,4 +78,14 @@ public class CartActivity extends AppCompatActivity {
             }
         });
     }
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            int totalBill = intent.getIntExtra("totalAmount",0);
+            overAllAmount.setText("total Amount :"+totalBill+"$");
+
+        }
+    };
 }
