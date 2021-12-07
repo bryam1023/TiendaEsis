@@ -15,6 +15,9 @@ import com.example.tiendaesis.R;
 import com.example.tiendaesis.adapters.AddressAdapter;
 import com.example.tiendaesis.models.AddressModel;
 import com.example.tiendaesis.models.MyCartModel;
+import com.example.tiendaesis.models.NewProductsModel;
+import com.example.tiendaesis.models.PopularProductsModel;
+import com.example.tiendaesis.models.ShowAllModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +49,10 @@ public class AddressActivity extends AppCompatActivity implements AddressAdapter
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //get data from detailed activity
+
+        Object obj =getIntent().getSerializableExtra("item");
+
         firestore =FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
@@ -63,6 +70,7 @@ public class AddressActivity extends AppCompatActivity implements AddressAdapter
                 .collection("Address").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                 if (task.isSuccessful()){
                     for (DocumentSnapshot doc : task.getResult().getDocuments()){
 
@@ -79,20 +87,31 @@ public class AddressActivity extends AppCompatActivity implements AddressAdapter
         paymentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
+                double amount = 0.0;
+                if (obj instanceof NewProductsModel){
+                    NewProductsModel newProductsModel =(NewProductsModel) obj;
+                    amount = newProductsModel.getPrice();
+                }
+                if (obj instanceof PopularProductsModel){
+                    PopularProductsModel popularProductsModel =(PopularProductsModel) obj;
+                    amount = popularProductsModel.getPrice();
+                }
+                if (obj instanceof ShowAllModel){
+                    ShowAllModel showAllModel =(ShowAllModel) obj;
+                    amount = showAllModel.getPrice();
+                }
+                Intent intent = new Intent(AddressActivity.this,PaymentActivity.class);
+                intent.putExtra("amount",amount);
+                startActivity(intent);
             }
         });
 
-
-
-        addAddress = findViewById(R.id.add_address_btn);
-
-        addAddress.setOnClickListener(new View.OnClickListener(){
+        addAddress.setOnClickListener(new View.OnClickListener() {
             @Override
-            public  void onClick (View v){
+            public void onClick(View v) {
                 startActivity(new Intent(AddressActivity.this,AddAddressActivity.class));
             }
-
         });
     }
 

@@ -39,14 +39,10 @@ public class DetailedActivity extends AppCompatActivity {
     int totalPrice = 0;
 
 //new products
-
     NewProductsModel newProductsModel = null;
 
-
     //Popular products
-
     PopularProductsModel popularProductsModel = null;
-
     //show all
     ShowAllModel showAllModel = null;
 
@@ -126,7 +122,21 @@ public class DetailedActivity extends AppCompatActivity {
          buyNow.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 startActivity(new Intent(DetailedActivity.this,AddAddressActivity.class));
+
+                Intent intent = new Intent(DetailedActivity.this,AddressActivity.class);
+
+                if ( newProductsModel !=null){
+                    intent.putExtra("item",newProductsModel);
+                }
+                if (popularProductsModel !=null){
+                    intent.putExtra("item",popularProductsModel);
+                }
+                 if (showAllModel !=null){
+                     intent.putExtra("item",showAllModel);
+                 }
+                startActivity(intent);
+
+
              }
          });
 //ADD TO CART
