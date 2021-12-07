@@ -50,6 +50,8 @@ public class CartActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
         //get data from my cart adapter
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver( mMessageReceiver,new IntentFilter("MyTotalAmount"));
